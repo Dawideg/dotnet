@@ -1,3 +1,4 @@
+using System.Net;
 using api.Data;
 using api.Interfaces;
 using api.Repository;
@@ -10,6 +11,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+//for including comments to stock
+builder.Services.AddControllers().AddNewtonsoftJson(options=>{
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
+
 //use ApplicationDBContext to connect with db
 builder.Services.AddDbContext<ApplicationDBContext>(options=>{
     //which db 
@@ -18,6 +25,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options=>{
 
 //
 builder.Services.AddScoped<IStockRepository, StockRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 var app = builder.Build();
 
